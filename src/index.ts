@@ -1,7 +1,7 @@
 import { createUnplugin, type UnpluginInstance } from 'unplugin'
 import { resolveOptions, type Options } from './core/options'
 
-export const Starter: UnpluginInstance<Options | undefined, false> = createUnplugin(
+export const UnpluginFactory: UnpluginInstance<Options | undefined, false> = createUnplugin(
   (rawOptions = {}) => {
     const options = resolveOptions(rawOptions)
 
@@ -9,12 +9,9 @@ export const Starter: UnpluginInstance<Options | undefined, false> = createUnplu
     return {
       name,
       enforce: options.enforce,
-
       transform: {
-        filter: {
-          id: { include: options.include, exclude: options.exclude },
-        },
-        handler(code) {
+        filter: { id: { include: options.include, exclude: options.exclude } },
+        handler(code: string) {
           return `// unplugin-starter injected\n${code}`
         },
       },
