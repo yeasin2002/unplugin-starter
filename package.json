@@ -79,5 +79,8 @@
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "unplugin": "^3.0.0"
   }
 }
