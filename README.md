@@ -29,7 +29,7 @@ Give a ⭐️ if this project helped you build better NPM packages!
 
 - **🪝 Husky + lint-staged** - Pre-commit hooks for automatic formatting and linting
 - **✅ Commitlint** - Enforce conventional commits for better changelogs
-- **📝 Changesets** - Automated version management and changelog generation
+- **🚀 release-it** - Tag-based automated releases with conventional-changelog
 - **🤖 GitHub Actions** - Complete CI/CD pipeline for testing and releases
 - **🔄 Dependabot** - Weekly automated dependency updates with proper grouping
 
@@ -116,22 +116,20 @@ pnpm run test
 
 ### Release & CI
 
-| Script                   | Description                 |
-| ------------------------ | --------------------------- |
-| `pnpm run check-exports` | Validate package exports    |
-| `pnpm run ci`            | Run full CI pipeline        |
-| `pnpm run local-release` | Version and publish locally |
-| `pnpm run release`       | Publish to npm (used by CI) |
+| Script                   | Description                      |
+| ------------------------ | -------------------------------- |
+| `pnpm run check-exports` | Validate package exports         |
+| `pnpm run ci`            | Run full CI pipeline             |
+| `pnpm run release`       | Create release (used by CI/Tags) |
 
 ## 📁 Project Structure
 
 ```
 npm-starter/
-├── .changeset/              # Changeset configuration and pending changes
 ├── .github/
 │   ├── workflows/
 │   │   ├── ci.yml          # CI/CD pipeline
-│   │   ├── release.yml     # Automated releases
+│   │   ├── release.yml     # Tag-based automated releases
 │   │   └── security.yml    # Security audits
 │   └── dependabot.yml      # Dependency update configuration
 ├── .husky/                  # Git hooks (pre-commit, commit-msg)
@@ -162,27 +160,61 @@ npm-starter/
 
 ## 📦 Publishing
 
-### Using Changesets (Recommended)
+This template uses **tag-based automated releases** with `release-it` and `conventional-changelog`.
+
+### Quick Release Workflow
 
 ```bash
-# 1. Create a changeset
-npx changeset
+# 1. Make changes and commit using conventional commits
+git commit -m "feat: add new feature"
+git commit -m "fix: resolve bug"
 
-# 2. Version packages
-pnpm run local-release
+# 2. Create a version tag (patch/minor/major)
+npm version patch  # 1.0.0 → 1.0.1
+# or
+npm version minor  # 1.0.0 → 1.1.0
+# or
+npm version major  # 1.0.0 → 2.0.0
 
-# The package will be automatically published when you push
+# 3. Push the tag to trigger automated release
+git push --follow-tags
 ```
 
-### Manual Publishing
+### What Happens Automatically
+
+When you push a tag (e.g., `v1.0.1`), GitHub Actions automatically:
+1. ✅ Runs the full CI pipeline
+2. ✅ Builds the package
+3. ✅ Generates/updates CHANGELOG.md from conventional commits
+4. ✅ Publishes to npm
+5. ✅ Creates a GitHub release with changelog
+
+### Pre-releases
+
+For beta/alpha versions:
 
 ```bash
-# Build and verify
-pnpm run ci
-
-# Publish to npm
-pnpm publish
+npm version prerelease --preid=beta  # 1.0.0 → 1.0.1-beta.0
+git push --follow-tags
 ```
+
+### Required Setup
+
+> **Important**: Add `NPM_TOKEN` to your GitHub repository secrets:
+> 1. Get an automation token from [npmjs.com](https://www.npmjs.com/settings/tokens)
+> 2. Add it to **Settings → Secrets → Actions** as `NPM_TOKEN`
+
+### Conventional Commits
+
+Use these commit prefixes for automatic changelog generation:
+
+- `feat:` - New features (minor version bump)
+- `fix:` - Bug fixes (patch version bump)
+- `docs:` - Documentation changes
+- `chore:` - Maintenance tasks
+- `refactor:` - Code refactoring
+- `test:` - Test updates
+- `perf:` - Performance improvements
 
 > **Note**: The `prepublishOnly` script ensures all checks pass before publishing.
 
@@ -285,7 +317,7 @@ pnpm run test
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [Vitest Documentation](https://vitest.dev/)
 - [tsdown Documentation](https://github.com/egoist/tsdown)
-- [Changesets Guide](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md)
+- [release-it Documentation](https://github.com/release-it/release-it)
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Total TypeScript - NPM Package Guide](https://www.totaltypescript.com/how-to-create-an-npm-package)
 
