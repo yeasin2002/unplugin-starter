@@ -35,7 +35,6 @@ Give a ⭐️ if this project helped you build better NPM packages!
 
 ### Documentation & Developer Experience
 
-- **📖 TypeDoc** - Auto-generated API documentation from JSDoc comments
 - **🐛 VS Code Integration** - Debug configurations and recommended extensions
 - **🔒 Security Audits** - Automated dependency scanning
 

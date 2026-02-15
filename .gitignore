@@ -174,6 +174,3 @@ yarn.lock/*
 
 # Finder (MacOS) folder config
 .DS_Store
-
-# TypeDoc generated documentation
-docs/
